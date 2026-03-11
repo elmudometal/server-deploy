@@ -1,0 +1,36 @@
+name: CI/CD Laravel Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted # Usa el runner instalado en la VPN
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2" # o versión usada en el servidor
+
+      - name: Install dependencies
+        run: |
+          composer install --no-dev --no-interaction --optimize-autoloader
+
+      - name: Run tests
+        run: |
+          php artisan test --no-interaction --fail-on-warning
+
+      # [Opcional] Construir assets o publicar artefactos
+      #- name: Build frontend
+      #  run: |
+      #    npm ci && npm run prod
+      #  shell: bash
+
+      - name: Deploy to Server
+        run: |
+          bash /var/www/app/deploy.sh
