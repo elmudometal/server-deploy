@@ -192,7 +192,7 @@ flowchart TD
     K -- Sí --> M[Actualizar symlink current]
     M --> N[Reiniciar queue workers]
     N --> O{Healthcheck OK?}
-    O -- Sí --> P[Deploy exitoso ✅]
+    O -- Sí --> P[Deploy exitoso]
     O -- No --> Q[Rollback a release anterior]
     Q --> R[Eliminar release fallido]
     P --> S[Eliminar lock file]
